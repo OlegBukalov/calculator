@@ -37,7 +37,9 @@ const operation = (oper) => {
 
     if (newNumber && currentOperation !== '=') {
         display.value = currentNumber;
+        currentOperation = oper;
     } else {
+        console.log(currentOperation+'else 1');
         if (currentOperation === '+') {
             currentNumber += displayNumber;
         } else if (currentOperation === '-') {
@@ -49,7 +51,6 @@ const operation = (oper) => {
         } else {
             currentNumber = displayNumber;
         }
-        
         currentNumber = Math.round(currentNumber*10000)/10000; // решение проблемы с дробями  
 
         display.value = currentNumber;
