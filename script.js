@@ -8,10 +8,12 @@ let numbers = document.querySelectorAll('.number'),
     sqrtBtn = document.getElementById('sqrt'),
     delBtn = document.getElementById('del'),
     minusBtn = document.getElementById('minus'),
+    powBtn = document.getElementById('pow'),
     currentNumber = 0,
     newNumber = false,
     currentOperation = '',
-    sqrSqrtNumber = false;
+    sqrSqrtNumber = false,
+    numberToPow = 0;
 
 const numberPress = (number) => {
     if (sqrSqrtNumber) {
@@ -35,28 +37,33 @@ const operation = (oper) => {
     let displayNumber = parseFloat(display.value);
     sqrSqrtNumber = false;
 
-    if (newNumber && currentOperation !== '=') {
-        display.value = currentNumber;
-        currentOperation = oper;
-    } else {
-        console.log(currentOperation+'else 1');
-        if (currentOperation === '+') {
-            currentNumber += displayNumber;
-        } else if (currentOperation === '-') {
-            currentNumber -= displayNumber;
-        } else if (currentOperation === '*') {
-            currentNumber *= displayNumber;
-        } else if (currentOperation === '/') {
-            currentNumber /= displayNumber;
+    // if (numberToPow !== 0) {
+    //     display.value = '^';//Math.pow(numberToPow, displayNumber);
+    //     numberToPow = 0;
+    //     newNumber = true;
+    // } else {
+        if (newNumber && currentOperation !== '=') {
+            display.value = currentNumber;
+            currentOperation = oper;
         } else {
-            currentNumber = displayNumber;
+            if (currentOperation === '+') {
+                currentNumber += displayNumber;
+            } else if (currentOperation === '-') {
+                currentNumber -= displayNumber;
+            } else if (currentOperation === '*') {
+                currentNumber *= displayNumber;
+            } else if (currentOperation === '/') {
+                currentNumber /= displayNumber;
+            } else {
+                currentNumber = displayNumber;
+            }
+            currentNumber = Math.round(currentNumber*10000)/10000; // решение проблемы с дробями  
+    
+            display.value = currentNumber;
+            currentOperation = oper;
+            newNumber = true;
         }
-        currentNumber = Math.round(currentNumber*10000)/10000; // решение проблемы с дробями  
-
-        display.value = currentNumber;
-        currentOperation = oper;
-        newNumber = true;
-    }
+    // }
 
 };
 
@@ -135,6 +142,32 @@ const minusFunction = () => {
     }
 }
 
+const powFunction = () => {
+    
+    let lengthValue = display.value.length,
+        indexPow = display.value.indexOf('^');
+
+    if (indexPow === -1) {
+        display.value += '^';
+    } else {
+        if (lengthValue > indexPow +1) {
+            let num = parseFloat(display.value.substring(0, indexPow)),
+                numPow = parseFloat(display.value.substring(indexPow+1));
+            if (currentNumber === 0) {
+                currentNumber = Math.pow(num, numPow);
+                display.value = currentNumber; 
+            } else {
+                display.value = Math.pow(num, numPow);
+                newNumber = false;
+            }
+            sqrSqrtNumber = true;
+        } else {
+            display.value = display.value.substring(0, lengthValue-1);
+        }
+    }
+    
+}
+
 for (let i = 0; i < numbers.length; i++) {
     let number = numbers[i];
     number.addEventListener('click', (e)=>{numberPress(e.target.textContent)});
@@ -159,3 +192,5 @@ sqrtBtn.addEventListener('click', sqrtFunction);
 delBtn.addEventListener('click', delFunction);
 
 minusBtn.addEventListener('click', minusFunction);
+
+powBtn.addEventListener('click', powFunction);

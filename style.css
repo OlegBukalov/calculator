@@ -39,6 +39,9 @@ body {
   cursor: pointer;
   transition: 0.1s all;
 }
+.no-uppercase {
+  text-transform: none;
+}
 .btn-hover-red:hover {
   background-color: #d83e33;
   color: #f2f2f2;
