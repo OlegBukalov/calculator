@@ -116,3 +116,19 @@ button {
     width: 132px;
   }
 }
+
+.manual {
+  width: 250px;
+  height: 155px;
+  padding-top: 20px;
+  border: solid;
+}
+
+.manual__text {
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: justify;
+  margin: 0;
+  font-size: 16px;
+}
+
